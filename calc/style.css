@@ -1,0 +1,33 @@
+.btn {
+            background-color: skyblue;
+            border: none;
+            color: white;
+            padding: 6px 20px;
+            margin-top: 10px;
+            margin-left: 4px;
+            text-align: center;
+            display: inline-block;
+            font-size: 20px;
+            
+            cursor: pointer;
+        }
+
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .form-row {
+            margin-top: 5px;
+            margin-left: 5px;
+        }
+
+        .calc-btns {
+            margin-left: 5px;
+        }
+
+        .input-group>.form-control {
+            flex: 0.1 0.1 auto;
+            width: 1%;
+        }
+
+       

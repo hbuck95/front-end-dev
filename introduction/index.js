@@ -17,15 +17,15 @@ console.log(3 / one);
 let myCat = {
     Breed: 'Long-hair',
     Colour: 'Black',
-    Name: "Turnip",
+    Name: "Star",
     "talk": () => console.log("Meow!"),
-    "favourite toys": ['scratchpost', 'ball']
+    favourite_toys: ['scratchpost', 'ball']
 };
 
 console.log('My cats breed: ', myCat.Breed, '\nColour: ', myCat.Colour, '\nName: ', myCat.Name);
 myCat.talk();
 
-myCat["favourite toys"].forEach(x => {
+myCat.favourite_toys.forEach(x => {
     console.log(x);
 });
 
@@ -36,7 +36,8 @@ function catMaker(breed, colour, name, favouriteToys) {
         colour,
         name,
         favouriteToys,
-        "myToys": () => ["favouriteToys"].forEach(toy => console.log(toy))
+        "myToys": () => favouriteToys.forEach(toy => console.log(toy)),
+        "talk": () => console.log("Meow!")
     }
     return cat;
 }
@@ -45,6 +46,7 @@ let catA = catMaker('Tabby', 'Tabby', 'Bagpuss', ['Mousie', 'String']);
 let catB = catMaker('Gingerbread', 'Ginger', 'Ruby', ['Squirrel', 'Tail']);
 catA.myToys();
 catB.myToys();
+catB.talk();
 
 console.log(catA);
 console.log(catB);
