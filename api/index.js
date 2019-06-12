@@ -19,12 +19,16 @@ function displayData(data) {
         accounts.push(parsedData); //if not just push it
     }
 
-    let myTable;
+    let myTable = document.getElementById("tbl");
     let keys = Object.keys(accounts[0]); //Get all of the keys for the object. We dont care about which object.
+
+    if (!!myTable) {
+        document.getElementById("data-table").removeChild(myTable);
+    }
 
     //Set up the initial table if it doesn't exist yet
     //Otherwise skip this step and append the data
-    if (!!!document.getElementById("tbl")) {
+  //  if (!!!document.getElementById("tbl")) {
         myTable = document.createElement("table");
         myTable.className = "table table-hover"; //Bootstrap
         myTable.id = "tbl";
@@ -41,9 +45,9 @@ function displayData(data) {
         //Attach the table to the document
         document.getElementById("data-table").appendChild(myTable);
 
-    } else {
-        myTable = document.getElementById("tbl");
-    }
+  //  } else {
+   //     myTable = document.getElementById("tbl");
+   // }
 
 
     //Start appending the data
@@ -99,7 +103,7 @@ function postTest() {
 
 }
 
-function deleteTest() {
+function deleteAccount() {
     var id = prompt("Enter ID of Account to Delete: ");
     req.open("DELETE", api + "account/deleteAccount/" + id)
     req.send();

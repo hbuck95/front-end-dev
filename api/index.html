@@ -10,6 +10,7 @@
 </head>
 
 <body>
+
     <div id="container">
 
         <div id="data-table">
@@ -18,10 +19,29 @@
 
         <div id="buttons">
             <br>
-            <button onclick="getAllAccounts()">Get All Accounts</button>
-            <button onclick="getAccountById()">Get Account by ID</button>
-            <button onclick="deleteTest()">Delete Account</button>
-            <button onclick="postTest()">Add Account</button>
+            <button class="btn" onclick="getAllAccounts()">Get All Accounts</button>
+            <button class="btn" onclick="getAccountById()">Get Account by ID</button>
+            <button class="btn" onclick="deleteAccount()">Delete Account</button>
+            <button class="btn" onclick="postTest()">Add Account</button>
+        </div>
+    </div>
+
+    <div id="new-account-form">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"><b>#</b></span>
+            </div>
+            <input type="text" class="form-control" id="AccountNoInput" placeholder="Account No."
+                aria-label="Account No." aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+
+            <input type="text" class="form-control" id="FNameInput" placeholder="Forename" aria-label="Forename"
+                aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="SurnameInput" placeholder="Surname" aria-label="Surname"
+                aria-describedby="basic-addon1">
         </div>
     </div>
 

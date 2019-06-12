@@ -7,5 +7,5 @@ function incrementBy1() {
     console.log("increment");
     document.getElementById("history").innerText += (count == 0 ? " " : ", ") + count;
     count++;
-    document.getElementById("counter").innerHTML = "Count: "+count;
+    document.getElementById("counter").innerHTML = "Count: " + count;
 } 

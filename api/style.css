@@ -7,3 +7,24 @@
 .header {
     font-weight: bold;
 }
+
+.btn {
+  background-color: #454D55;
+  border: none;
+  color: white;
+  padding: 6px 20px;
+  margin-top: 10px;
+  margin-left: 4px;
+  text-align: center;
+  display: inline-block;
+  font-size: 20px;
+}
+
+.input-group>.form-control {
+  flex: 0.1 0.1 auto;
+  width: 1%;
+}
+
+.new-account-form>.mb3{
+  visibility: hidden !important; 
+}
