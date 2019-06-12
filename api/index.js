@@ -1,12 +1,20 @@
 const req = new XMLHttpRequest();
 const api = "http://localhost:8080/AccountSETemplate/api/";
 const createAccountForm = document.getElementById("new-account-form");
+let accounts = [];
+let selectedAccount;
+const accountNumberInput = document.getElementById("inlineFormInputAccountNo");
+const firstNameInput = document.getElementById("inlineFormInputFname");
+const lastNameInput = document.getElementById("inlineFormInputLname");
+
+const selectRecord = (id) => idOfRecordSelected = id;
+let idOfRecordSelected;
+
 
 toggleAccountForm("hidden");
 
 function displayData(data) {
-    console.log(data);
-    var accounts = [];
+    accounts = []; //Reset this variable
 
     let parsedData = JSON.parse(data); //Convert the json data to an object
 
@@ -64,7 +72,8 @@ function displayData(data) {
                 let selector = document.createElement("INPUT");
                 selector.setAttribute("type", "checkbox");
                 selector.setAttribute("id", element[keys[0]])
-                selector.setAttribute("tag", "selector")
+                selector.setAttribute("class", "selector")
+                selector.setAttribute("onclick", "selectRecord(id)");
                 cell.append(selector);
             }
         }
@@ -85,12 +94,11 @@ function getAccountById() {
     var id = prompt("Enter ID of Account to Retrieve: ");
 
     makeRequest("GET", `account/findAccount/${id}`, "")
-        .then()
+        .then(data => displayData(data))
         .catch(error => {
             console.log(error);
         }
         );
-
 }
 
 function makeRequest(method, url, body) {
@@ -100,38 +108,80 @@ function makeRequest(method, url, body) {
 
         req.onload = () => {
             if (req.status >= 200 && req.status < 300) {
-                res(displayData(req.responseText));
+                res(req.responseText);
             } else {
                 rej(req.statusText);
             }
         };
-
         req.send(body);
     });
 }
 
 function createAccount() {
-    const accountNumberInput = document.getElementById("inlineFormInputAccountNo");
-    const firstNameInput = document.getElementById("inlineFormInputFname");
-    const lastNameInput = document.getElementById("inlineFormInputLname");
     const body = `{\"accountNumber\":\"${accountNumberInput.value}\",\"firstName\":\"${firstNameInput.value}\",\"lastName\":\"${lastNameInput.value}\"}`;
 
-    console.log(body);
-
-    req.open("POST", api + "account/createAccount");
-    req.send(body);
-
-    req.onload = function () {
-        const resp = JSON.parse(req.responseText);
-        console.log(req.responseText);
-        if (resp.message == "Account has been created sucessfully") {
+    makeRequest("POST", "account/createAccount", body)
+        .then(resp => {
+            const response = JSON.parse(resp);
+            console.log(resp);
+            if (response.message == "Account has been created sucessfully") {
+                window.alert(response.message);
+                toggleAccountForm("hidden");
+                resetForm();
+            }
             toggleAccountForm("hidden");
-            accountNumberInput.value = "";
-            firstNameInput.value = "";
-            lastNameInput.value = "";
+            resetForm();
+        })
+        .catch(error => {
+            console.log(error);
         }
-        window.alert(resp.message);
+        );
+}
+
+function deleteAccount() {
+    var id = prompt("Confirm ID of Account to Delete: ", idOfRecordSelected);
+
+    makeRequest("DELETE", `account/deleteAccount/${id}`, "")
+        .then(resp => {
+            const response = JSON.parse(resp);
+            window.alert(response.message);
+            toggleAccountForm("hidden");
+            resetForm();
+        })
+        .catch(error => {
+            console.log(error);
+        }
+        );
+}
+
+function setupUpdateForm() {
+    toggleAccountForm("visible");
+
+    for (let account of accounts) {
+        if (account.id == idOfRecordSelected) {
+            selectedAccount = account;
+        }
     }
+
+    accountNumberInput.value = selectedAccount.accountNumber;
+    firstNameInput.value = selectedAccount.firstName;
+    lastNameInput.value = selectedAccount.lastName;
+}
+
+function updateAccount() {
+    const body = `{\"accountNumber\":\"${accountNumberInput.value}\",\"firstName\":\"${firstNameInput.value}\",\"lastName\":\"${lastNameInput.value}\"}`;
+
+    makeRequest("PUT", `account/updateAccount/${selectedAccount.id}`, body)
+        .then(resp => {
+            const response = JSON.parse(resp);
+            window.alert(response.message);
+            toggleAccountForm("hidden");
+            resetForm();
+        })
+        .catch(error => {
+            console.log(error);
+        }
+        );
 }
 
 function toggleAccountForm(visibilityState) {
@@ -142,41 +192,12 @@ function toggleAccountForm(visibilityState) {
     createAccountForm.style.visibility = visibilityState;
 }
 
-function deleteAccount() {
-    var id = prompt("Enter ID of Account to Delete: ");
-    req.open("DELETE", api + "account/deleteAccount/" + id)
-    req.send();
-
-    req.onload = () => {
-        var res = JSON.parse(req.responseText);
-        window.alert(res.message);
-    }
+function setTrigger(trigger) {
+    document.getElementById("account-form").setAttribute("onsubmit", `${trigger}(); return false`);
 }
 
-function updateTest() {
-    //const body = "{\"accountNumber\":\"0000\",\"firstName\":\"Bobson\",\"lastName\":\"Dugnutt\"}";
-    const form = document.getElementById("account-form").setAttribute("onSubmit", "updateAccount(); return false");
-    toggleAccountForm("visible");
-
-    const accountNumberInput = document.getElementById("inlineFormInputAccountNo");
-    const firstNameInput = document.getElementById("inlineFormInputFname");
-    const lastNameInput = document.getElementById("inlineFormInputLname");
-    const body = `{\"accountNumber\":\"${accountNumberInput.value}\",\"firstName\":\"${firstNameInput.value}\",\"lastName\":\"${lastNameInput.value}\"}`;
-
-    console.log("checks");
-    const checks = document.getElementsByTagName("selector");
-    for (let check of checks) {
-        console.log(check);
-    }
-
-    // req.open("PUT", api + "account/updateAccount/" + id);
-    // req.send(body);
-
-    // req.onload = function () {
-    //     console.log(req.responseText);
-    // }
-}
-
-function updateAccount() {
-    window.alert("test");
+function resetForm() {
+    accountNumberInput.value = "";
+    firstNameInput.value = "";
+    lastNameInput.value = "";
 }

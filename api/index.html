@@ -24,15 +24,15 @@
             <button class="btn" onclick="getAllAccounts(displayData)">Get All Accounts</button>
             <button class="btn" onclick="getAccountById()">Get Account by ID</button>
             <button class="btn" onclick="deleteAccount()">Delete Account</button>
-            <button class="btn" onclick="toggleAccountForm()">Add Account</button>
-            <button class="btn" onclick="updateTest()">Update Account</button>
+            <button class="btn" onclick="toggleAccountForm(); setTrigger('createAccount')">Add Account</button>
+            <button class="btn" onclick="setupUpdateForm(); setTrigger('updateAccount')">Update Account</button>
         </div>
     </div>
 
     <br>
 
     <div id="new-account-form">
-        <form class="form-inline" id="account-form" onsubmit="createAccount(); return false">
+        <form class="form-inline" id="account-form" onsubmit="updateAccount(); return false">
             <label class="sr-only" for="inlineFormInputAccountNo">Account Number</label>
             <div class="input-group mb-2 mr-sm-2">
                 <div class="input-group-prepend">
