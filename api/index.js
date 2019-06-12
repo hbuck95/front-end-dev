@@ -1,13 +1,11 @@
 const req = new XMLHttpRequest();
 const api = "http://localhost:8080/AccountSETemplate/api/";
+const createAccountForm = document.getElementById("new-account-form");
 
-// getTest();
-// updateTest(5);
-// getTest();
-// displayData("");
-
+toggleAccountForm("hidden");
 
 function displayData(data) {
+    console.log(data);
     var accounts = [];
 
     let parsedData = JSON.parse(data); //Convert the json data to an object
@@ -26,29 +24,27 @@ function displayData(data) {
         document.getElementById("data-table").removeChild(myTable);
     }
 
-    //Set up the initial table if it doesn't exist yet
-    //Otherwise skip this step and append the data
-  //  if (!!!document.getElementById("tbl")) {
-        myTable = document.createElement("table");
-        myTable.className = "table table-hover"; //Bootstrap
-        myTable.id = "tbl";
-        let head = myTable.createTHead();
-        head.className = "thead-dark"; //Bootstrap        
+    //Set up the initial table
+    myTable = document.createElement("table");
+    myTable.className = "table table-hover"; //Bootstrap
+    myTable.id = "tbl";
+    let head = myTable.createTHead();
+    head.className = "thead-dark"; //Bootstrap        
 
-        //Create table headers    
-        for (let key of keys) {
-            let cell = document.createElement("th");
-            cell.innerHTML = "<b>" + key + "</b>";
-            head.appendChild(cell);
-        }
+    //Create table headers    
+    for (let key of keys) {
+        let cell = document.createElement("th");
+        cell.innerHTML = "<b>" + key + "</b>";
+        head.appendChild(cell);
+    }
 
-        //Attach the table to the document
-        document.getElementById("data-table").appendChild(myTable);
+    //Create table header cell for the selection boxes
+    let headCell = document.createElement("th");
+    headCell.innerHTML = "<b>Selection</b>";
+    head.appendChild(headCell);
 
-  //  } else {
-   //     myTable = document.getElementById("tbl");
-   // }
-
+    //Attach the table to the document
+    document.getElementById("data-table").appendChild(myTable);
 
     //Start appending the data
     let body = myTable.createTBody();
@@ -57,50 +53,93 @@ function displayData(data) {
     accounts.forEach(element => {
         row = body.insertRow();
 
-        for (let i = 0; i < keys.length; i++) {
+        for (let i = 0; i < keys.length + 1; i++) {
             let cell = row.insertCell();
             console.log(element);
-            let text = document.createTextNode(element[keys[i]]);
-            cell.append(text);
+
+            if (i < keys.length) {
+                let text = document.createTextNode(element[keys[i]]);
+                cell.append(text);
+            } else {
+                let selector = document.createElement("INPUT");
+                selector.setAttribute("type", "checkbox");
+                selector.setAttribute("id", element[keys[0]])
+                selector.setAttribute("tag", "selector")
+                cell.append(selector);
+            }
         }
-
     });
-
 }
 
-function getAllAccounts() {
+function getAllAccounts(callback) {
 
-    req.onload = function () {
-        displayData(req.responseText);
+    req.onload = () => {
+        callback(req.responseText);
     }
 
     req.open("GET", api + "account/getAllAccounts");
     req.send();
-
 }
 
 function getAccountById() {
     var id = prompt("Enter ID of Account to Retrieve: ");
 
-    req.onload = function () {
-        displayData(req.responseText);
-    }
-
-    req.open("GET", api + "account/findAccount/" + id);
-    req.send();
+    makeRequest("GET", `account/findAccount/${id}`, "")
+        .then()
+        .catch(error => {
+            console.log(error);
+        }
+        );
 
 }
 
-function postTest() {
-    const body = "{\"accountNumber\":\"7569\",\"firstName\":\"Bobson\",\"lastName\":\"Dugnutt\"}";
+function makeRequest(method, url, body) {
+    return new Promise((res, rej) => {
+        const req = new XMLHttpRequest();
+        req.open(method, api + url);
+
+        req.onload = () => {
+            if (req.status >= 200 && req.status < 300) {
+                res(displayData(req.responseText));
+            } else {
+                rej(req.statusText);
+            }
+        };
+
+        req.send(body);
+    });
+}
+
+function createAccount() {
+    const accountNumberInput = document.getElementById("inlineFormInputAccountNo");
+    const firstNameInput = document.getElementById("inlineFormInputFname");
+    const lastNameInput = document.getElementById("inlineFormInputLname");
+    const body = `{\"accountNumber\":\"${accountNumberInput.value}\",\"firstName\":\"${firstNameInput.value}\",\"lastName\":\"${lastNameInput.value}\"}`;
+
+    console.log(body);
 
     req.open("POST", api + "account/createAccount");
     req.send(body);
 
     req.onload = function () {
+        const resp = JSON.parse(req.responseText);
         console.log(req.responseText);
+        if (resp.message == "Account has been created sucessfully") {
+            toggleAccountForm("hidden");
+            accountNumberInput.value = "";
+            firstNameInput.value = "";
+            lastNameInput.value = "";
+        }
+        window.alert(resp.message);
     }
+}
 
+function toggleAccountForm(visibilityState) {
+    if (visibilityState === undefined) {
+        createAccountForm.style.visibility = createAccountForm.style.visibility == "hidden" ? "visible" : "hidden";
+        return;
+    }
+    createAccountForm.style.visibility = visibilityState;
 }
 
 function deleteAccount() {
@@ -108,19 +147,36 @@ function deleteAccount() {
     req.open("DELETE", api + "account/deleteAccount/" + id)
     req.send();
 
-    req.onload = function () {
+    req.onload = () => {
         var res = JSON.parse(req.responseText);
         window.alert(res.message);
     }
 }
 
-function updateTest(id) {
-    const body = "{\"accountNumber\":\"0000\",\"firstName\":\"Bobson\",\"lastName\":\"Dugnutt\"}";
+function updateTest() {
+    //const body = "{\"accountNumber\":\"0000\",\"firstName\":\"Bobson\",\"lastName\":\"Dugnutt\"}";
+    const form = document.getElementById("account-form").setAttribute("onSubmit", "updateAccount(); return false");
+    toggleAccountForm("visible");
 
-    req.open("PUT", api + "account/updateAccount/" + id);
-    req.send(body);
+    const accountNumberInput = document.getElementById("inlineFormInputAccountNo");
+    const firstNameInput = document.getElementById("inlineFormInputFname");
+    const lastNameInput = document.getElementById("inlineFormInputLname");
+    const body = `{\"accountNumber\":\"${accountNumberInput.value}\",\"firstName\":\"${firstNameInput.value}\",\"lastName\":\"${lastNameInput.value}\"}`;
 
-    req.onload = function () {
-        console.log(req.responseText);
+    console.log("checks");
+    const checks = document.getElementsByTagName("selector");
+    for (let check of checks) {
+        console.log(check);
     }
+
+    // req.open("PUT", api + "account/updateAccount/" + id);
+    // req.send(body);
+
+    // req.onload = function () {
+    //     console.log(req.responseText);
+    // }
+}
+
+function updateAccount() {
+    window.alert("test");
 }

@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 
 <head>
     <title>Accounts API</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet" type="text/css">
@@ -19,31 +21,41 @@
 
         <div id="buttons">
             <br>
-            <button class="btn" onclick="getAllAccounts()">Get All Accounts</button>
+            <button class="btn" onclick="getAllAccounts(displayData)">Get All Accounts</button>
             <button class="btn" onclick="getAccountById()">Get Account by ID</button>
             <button class="btn" onclick="deleteAccount()">Delete Account</button>
-            <button class="btn" onclick="postTest()">Add Account</button>
+            <button class="btn" onclick="toggleAccountForm()">Add Account</button>
+            <button class="btn" onclick="updateTest()">Update Account</button>
         </div>
     </div>
+
+    <br>
 
     <div id="new-account-form">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1"><b>#</b></span>
+        <form class="form-inline" id="account-form" onsubmit="createAccount(); return false">
+            <label class="sr-only" for="inlineFormInputAccountNo">Account Number</label>
+            <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">#</div>
+                </div>
+                <input type="text" class="form-control" id="inlineFormInputAccountNo" placeholder="Account No."
+                    required>
             </div>
-            <input type="text" class="form-control" id="AccountNoInput" placeholder="Account No."
-                aria-label="Account No." aria-describedby="basic-addon1">
-        </div>
-        <div class="input-group mb-3">
 
-            <input type="text" class="form-control" id="FNameInput" placeholder="Forename" aria-label="Forename"
-                aria-describedby="basic-addon1">
-        </div>
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" id="SurnameInput" placeholder="Surname" aria-label="Surname"
-                aria-describedby="basic-addon1">
-        </div>
+            <label class="sr-only" for="inlineFormInputFname">Forename</label>
+            <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputFname" placeholder="Forename"
+                required>
+
+            <label class="sr-only" for="inlineFormInputLname">Name</label>
+            <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputLname" placeholder="Surname"
+                required>
+
+
+
+            <button type="submit" type="button" class="btn btn-primary mb-2">Submit</button>
+        </form>
     </div>
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
