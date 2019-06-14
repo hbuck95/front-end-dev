@@ -11,7 +11,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="index.html">Calculator</a>
+        <a class="navbar-brand" href="result.html">Result</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -33,10 +33,10 @@
                         Calculate
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" onclick="calculate('+');">+</a>
-                        <a class="dropdown-item" onclick="calculate('-');">-</a>
-                        <a class="dropdown-item" onclick="calculate('*');">*</a>
-                        <a class="dropdown-item" onclick="calculate('/');">/</a>
+                        <a class="dropdown-item" href="index.html">+</a>
+                        <a class="dropdown-item" href="#">-</a>
+                        <a class="dropdown-item" href="#">*</a>
+                        <a class="dropdown-item" href="#">/</a>
                     </div>
                 </li>
             </ul>
@@ -49,38 +49,16 @@
 
     <br>
 
-    <h1>Calculator</h1>
-    <div class="form-elements">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1"><b>Value A:</b></span>
-            </div>
-            <input type="text" class="form-control" id="InputA" placeholder="0" aria-label="0"
-                aria-describedby="basic-addon1">
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1"><b>Value B:</b></span>
-            </div>
-            <input type="text" class="form-control" id="InputB" placeholder="0" aria-label="0"
-                aria-describedby="basic-addon1">
-        </div>
-
-        <div class="calc-btns">
-            <button id="plus" class="btn">+</button>
-            <button id="minus" class="btn">-</button>
-            <button id="multi" class="btn">*</button>
-            <button id="divide" class="btn">/</button>
-        </div>
+    <h1>Result</h1>
+    
         <br>
-        <!-- <div class="input-group mb-3" id="result-area">
+        <div class="input-group mb-3" id="result-area">
 
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1"><b>Result:</b></span>
             </div>
             <input class="form-control" type="text" id="result" aria-describedby="basic-addon1" readonly>
-        </div>-->
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -92,7 +70,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src="index.js"></script>
+    <script src="result.js"></script>
 
 </body>
 

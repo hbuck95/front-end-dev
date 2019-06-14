@@ -1,7 +1,7 @@
 const req = new XMLHttpRequest();
 const api = "http://localhost:8080/AccountSETemplate/api/";
 const createAccountForm = document.getElementById("new-account-form");
-let accounts = [];
+let records = [];
 let selectedAccount;
 const accountNumberInput = document.getElementById("inlineFormInputAccountNo");
 const firstNameInput = document.getElementById("inlineFormInputFname");
@@ -14,29 +14,30 @@ let idOfRecordSelected;
 toggleAccountForm("hidden");
 
 function displayData(data) {
-    accounts = []; //Reset this variable
+    records = []; //Reset this variable
 
     let parsedData = JSON.parse(data); //Convert the json data to an object
 
-    if (Array.isArray(parsedData)) { //if its an array merge it into accounts
-        accounts = accounts.concat(parsedData);
-        console.log(accounts);
+    if (Array.isArray(parsedData)) { //if its an array merge it into records
+        records = records.concat(parsedData);
+        console.log(records);
     } else {
-        accounts.push(parsedData); //if not just push it
+        records.push(parsedData); //if not just push it
     }
 
-    let myTable = document.getElementById("tbl");
-    let keys = Object.keys(accounts[0]); //Get all of the keys for the object. We dont care about which object.
+    let dataTable = document.getElementById("tbl");
+    let keys = Object.keys(records[0]); //Get all of the keys for the object. We dont care about which object.
 
-    if (!!myTable) {
-        document.getElementById("data-table").removeChild(myTable);
+    //If the data table exists then delete it by removing it from the parent
+    if (!!dataTable) {
+        document.getElementById("data-table").removeChild(dataTable);
     }
 
     //Set up the initial table
-    myTable = document.createElement("table");
-    myTable.className = "table table-hover"; //Bootstrap
-    myTable.id = "tbl";
-    let head = myTable.createTHead();
+    dataTable = document.createElement("table");
+    dataTable.className = "table table-hover"; //Bootstrap
+    dataTable.id = "tbl";
+    let head = dataTable.createTHead();
     head.className = "thead-dark"; //Bootstrap        
 
     //Create table headers    
@@ -48,17 +49,17 @@ function displayData(data) {
 
     //Create table header cell for the selection boxes
     let headCell = document.createElement("th");
-    headCell.innerHTML = "<b>Selection</b>";
+    headCell.innerHTML = "<b>Actions</b>";
     head.appendChild(headCell);
 
     //Attach the table to the document
-    document.getElementById("data-table").appendChild(myTable);
+    document.getElementById("data-table").appendChild(dataTable);
 
     //Start appending the data
-    let body = myTable.createTBody();
+    let body = dataTable.createTBody();
 
     //Create table rows
-    accounts.forEach(element => {
+    records.forEach(element => {
         row = body.insertRow();
 
         for (let i = 0; i < keys.length + 1; i++) {

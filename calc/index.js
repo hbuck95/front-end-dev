@@ -1,47 +1,34 @@
-document.getElementById("plus").addEventListener("click", addition);
-document.getElementById("minus").addEventListener("click", subtraction);
-document.getElementById("multi").addEventListener("click", multiply);
-document.getElementById("divide").addEventListener("click", division);
+document.getElementById("plus").addEventListener("click", function () { calculate("+"); });
+document.getElementById("minus").addEventListener("click", function () { calculate("-"); });
+document.getElementById("multi").addEventListener("click", function () { calculate("*"); });
+document.getElementById("divide").addEventListener("click", function () { calculate("/"); });
 
-const resultDisplay = document.getElementById("result");
+function calculate(operator) {
+    let a = Number(document.getElementById("InputA").value);
+    let b = Number(document.getElementById("InputB").value);
+    var result;
 
-/*function calculate(){
-    let numA = Number(document.getElementById("InputA").value);
-    let numB = Number(document.getElementById("InputA").value);
-}*/
+    switch (operator) {
+        case "+":
+            result = a + b;
+            break;
+        case "-":
+            result = a - b;
+            break;
+        case "/":
+            result = a / b;
+            break;
+        case "*":
+            result = a * b;
+            break;
+        default:
+            console.log(`Could not parse operator '${operator}'`)
+            return;
+    }
 
-function addition() {
-    let a = parseInt(document.getElementById("InputA").value, 10);
-    let b = parseInt(document.getElementById("InputA").value, 10);
-    let r = a + b;
-    resultDisplay.value = r;
-    console.log(r);
-    return r;
-}
-
-function subtraction() {
-    let a = parseInt(document.getElementById("InputA").value, 10);
-    let b = parseInt(document.getElementById("InputA").value, 10);
-    let r = a - b;
-    resultDisplay.value = r;
-    console.log(r);
-    return r;
-}
-
-function multiply() {
-    let a = parseInt(document.getElementById("InputA").value, 10);
-    let b = parseInt(document.getElementById("InputA").value, 10);
-    let r = a * b;
-    resultDisplay.value = r;
-    console.log(r);
-    return r;
-}
-
-function division() {
-    let a = parseInt(document.getElementById("InputA").value, 10);
-    let b = parseInt(document.getElementById("InputA").value, 10);
-    let r = a / b;
-    resultDisplay.value = r;
-    console.log(r);
-    return r;
+    sessionStorage.setItem("operator", operator);
+    sessionStorage.setItem("result", result);
+    sessionStorage.setItem("a", a);
+    sessionStorage.setItem("b", b);
+    window.location.assign("result.html")
 }
